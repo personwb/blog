@@ -80,6 +80,7 @@ class Artical(models.Model):
 
     def simple_to_obj(self):
         return {
+            'createTime': self.create_time.strftime('%Y-%m-%d %H:%M'),
             'id': self.id,
             'title': self.title,
             'contentType': self.content_type,
