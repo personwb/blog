@@ -89,6 +89,7 @@ class Artical(models.Model):
 
     def to_obj(self):
         return {
+            'createTime': self.create_time.strftime('%Y-%m-%d %H:%M'),
             'id': self.id,
             'title': self.title,
             'htmlText': self.html_file.file.read(),
