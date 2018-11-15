@@ -62,7 +62,9 @@ class Artical(models.Model):
 
     no = models.ForeignKey(to='ArticalNo', null=True, verbose_name='文字编号')
 
-    title = models.CharField(max_length=100, default='标题', verbose_name='标题')
+    title = models.CharField(max_length=100, default='标题', null=True, verbose_name='标题')
+
+    thumbnail_text = models.CharField(null=True, max_length=100, verbose_name='缩略文本')
 
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
 
@@ -80,6 +82,7 @@ class Artical(models.Model):
 
     def simple_to_obj(self):
         return {
+            'thumbnailText': self.get_thumbnail_text(),
             'createTime': self.create_time.strftime('%Y-%m-%d %H:%M'),
             'id': self.id,
             'title': self.title,
@@ -90,6 +93,7 @@ class Artical(models.Model):
 
     def to_obj(self):
         return {
+            'thumbnailText': self.get_thumbnail_text(),
             'createTime': self.create_time.strftime('%Y-%m-%d %H:%M'),
             'id': self.id,
             'title': self.title,
@@ -108,6 +112,28 @@ class Artical(models.Model):
         self.scan = self.scan + 1
         self.save()
         return self.to_obj()
+
+    def get_thumbnail_text(self):
+        if self.thumbnail_text:
+            return self.thumbnail_text
+        else:
+            if self.mark_down_file:
+                with open(self.mark_down_file.path, 'r') as r:
+                    content = r.read().decode()
+                    length = len(content)
+                    if length > 72:
+                        valid = content[0:72]
+                        self.thumbnail_text = valid.replace('\n', '')
+                        self.save()
+                        return valid
+                    elif length == 0:
+                        return ''
+                    else:
+                        self.thumbnail_text = content.replace('\n', '')
+                        self.save()
+                        return content
+            else:
+                return ''
 
 class ArticalNo(models.Model):
     pass
