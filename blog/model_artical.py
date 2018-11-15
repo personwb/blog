@@ -12,7 +12,7 @@ class ArticalLevelOne(models.Model):
 
     title = models.CharField(max_length=20, verbose_name='名称')
 
-    create_time = models.DateTimeField(auto_now=True, verbose_name='创建时间')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
 
     user = models.ForeignKey(to='User', related_name='artical_one_user', verbose_name='用户')
 
@@ -33,7 +33,7 @@ class ArticalLevelTwo(models.Model):
 
     title = models.CharField(max_length=20, verbose_name='名称')
 
-    create_time = models.DateTimeField(auto_now=True, verbose_name='创建时间')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
 
     level_one = models.ForeignKey(to='ArticalLevelOne', related_name='artical_level_two_level_one', verbose_name='一级名称')
 
@@ -64,7 +64,7 @@ class Artical(models.Model):
 
     title = models.CharField(max_length=100, default='标题', verbose_name='标题')
 
-    create_time = models.DateTimeField(auto_now=True, verbose_name='创建时间')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
 
     content_type = models.CharField(null=True, max_length=20, verbose_name='内容类型')
 

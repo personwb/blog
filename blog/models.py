@@ -18,7 +18,7 @@ class User(models.Model):
 
     email = models.EmailField(verbose_name='email')
 
-    create_time = models.DateTimeField(auto_now=True,
+    create_time = models.DateTimeField(auto_now_add=True,
                                        verbose_name='创建时间')
 
     gender = models.CharField(max_length=1,
