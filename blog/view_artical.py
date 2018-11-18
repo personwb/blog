@@ -33,7 +33,7 @@ def artical_list(request, user, body):
 
     for level_one in result:
         for level_two in level_one['levelTwoList']:
-            level_two['articalList'] = [artical.simple_to_obj() for artical in Artical.objects.filter(level_two_id=level_two['id'])]
+            level_two['articalList'] = [artical.simple_to_obj() for artical in Artical.objects.filter(level_two_id=level_two['id']).order_by('-create_time')]
 
     return res_cross_success(result)
 
@@ -93,18 +93,53 @@ def add_level_two(request, user, body):
 
     level_one_id = get_key(body, 'levelOneId')
 
+    level_two_id = body.get('id', None)
+
     title = get_key(body, 'title')
 
     try:
         level_one = ArticalLevelOne.objects.get(pk=level_one_id)
     except Exception as e:
         logger.info(e)
-        return res_cross('1001', None, '未查询到一级菜单')
+        return res_cross('1001', None, '未查询到该语言')
 
-    ArticalLevelTwo(level_one=level_one, title=title).save()
+    if level_two_id:
+        try:
+            level_two = ArticalLevelTwo.objects.get(pk=level_two_id)
+        except Exception as e:
+            logger.info(e)
+            return res_cross('1001', None, '未查询到分组信息')
+    else:
+        level_two = ArticalLevelTwo()
+
+    level_two.level_one = level_one
+    level_two.title = title
+    level_two.save()
 
     return res_cross_success(None)
 
+
+@request_log
+@catch_exception_response
+@check_token
+def remove_level_two(request, user, body):
+
+    level_two_id = body.get('id', None)
+
+    try:
+        level_two = ArticalLevelTwo.objects.get(pk=level_two_id)
+    except Exception as e:
+        logger.info(e)
+        return res_cross('1001', None, '未查询到分组信息')
+
+    exist = Artical.objects.filter(level_two=level_two)
+
+    if len(exist):
+        return res_cross('1001', None, '当前分组下存在文章，请先移动文章')
+
+    level_two.delete()
+
+    return res_cross_success(None)
 
 @request_log
 @catch_exception_response
@@ -182,8 +217,6 @@ def artical_add(request, user, body, files):
 
     artical_title = get_key(body, 'title')
 
-    artical_level_one_id = get_key(body, 'levelOneId')
-
     artical_level_two_id = get_key(body, 'levelTwoId')
 
     artical_route_path = body.get('routePath', None)
@@ -221,9 +254,6 @@ def artical_add(request, user, body, files):
     if mark_down_file or artical.mark_down_file:
 
         content_type = 'mark_down_file'
-
-    if not content_type:
-        return res_cross('1001', None, '请输入路由名称或者选择MarkDown文件')
 
     artical.title = artical_title
     artical.content_type = content_type
@@ -263,4 +293,4 @@ def artical_add(request, user, body, files):
 
     artical.save()
 
-    return res_cross_success()
+    return res_cross_success(artical.to_obj())

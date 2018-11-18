@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['127.0.0.1', '192.168.0.103', 'localhost', '192.168.28.151', '1
 
 # media path
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files') # 此路径为文件的真实存储的路径
-MEDIA_URL = '/files/' # 此路径为浏览器上展示的URL的路径
+MEDIA_URL = '/blog/files/' # 此路径为浏览器上展示的URL的路径
 
 MEDIA_ROOT_SF = '/Users/wangtieshan/Desktop/tututest'
 MEDIA_URL_SF = '/sf/'

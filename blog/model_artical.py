@@ -92,20 +92,33 @@ class Artical(models.Model):
         }
 
     def to_obj(self):
+        html_text = None
+        if self.html_file:
+            with open(self.html_file.path, 'r') as r:
+                html_text = r.read().decode()
+                r.close()
+        markDownFilePath = None
+        if self.mark_down_file:
+            markDownFilePath = parse_to_url(self.mark_down_file.url)
+        content = ''
+        # with open(self.mark_down_file.path, 'r') as r:
+        #     content = r.read().decode()
+        #     r.close()
         return {
             'thumbnailText': self.get_thumbnail_text(),
             'createTime': self.create_time.strftime('%Y-%m-%d %H:%M'),
             'id': self.id,
             'title': self.title,
-            'htmlText': self.html_file.file.read(),
+            'htmlText': html_text,
             'levelOne': self.level_two.level_one.to_obj(),
             'levelTwo': self.level_two.to_obj(),
             "levelOneId": self.level_two.level_one.id,
             'levelTwoId': self.level_two.id,
-            'markDownFilePath': parse_to_url(self.mark_down_file.url),
+            'markDownFilePath': markDownFilePath,
             'contentType': self.content_type,
             'routePath': self.route_path,
-            'scan': self.scan
+            'scan': self.scan,
+            # 'content': content
         }
 
     def obj_detail_scan(self):
