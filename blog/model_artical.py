@@ -62,7 +62,7 @@ class Artical(models.Model):
 
     no = models.ForeignKey(to='ArticalNo', null=True, verbose_name='文字编号')
 
-    title = models.CharField(max_length=100, default='标题', null=True, verbose_name='标题')
+    title = models.CharField(max_length=1000, default='标题', null=True, verbose_name='标题')
 
     thumbnail_text = models.CharField(null=True, max_length=100, verbose_name='缩略文本')
 
