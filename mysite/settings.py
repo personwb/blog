@@ -194,9 +194,9 @@ LOGGING = {
         'default': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/root/python/pone/all.log', #或者直接写路径：'/Users/caiwenshu/Documents/workspace_python/MobileManagementPlatform/mysite/all.log',
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 5,
+            'filename': '/root/python/blog/all.log', #或者直接写路径：'/Users/caiwenshu/Documents/workspace_python/MobileManagementPlatform/mysite/all.log',
+            'maxBytes': 1024*1024*10, # 5 MB
+            'backupCount': 10,
             'formatter':'standard',
         },
         'console':{
