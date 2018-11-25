@@ -28,7 +28,7 @@ class ArticalLevelOne(models.Model):
         return {
             'title': self.title,
             'id': self.id,
-            'levelTwoList': [{ 'id': two.id, 'title': two.title, } for two in ArticalLevelTwo.objects.filter(level_one_id=self.id)]
+            'levelTwoList': [{ 'id': two.id, 'title': two.title, } for two in ArticalLevelTwo.objects.filter(level_one_id=self.id).order_by('-order')]
         }
 
 class ArticalLevelTwo(models.Model):
