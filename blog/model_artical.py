@@ -16,6 +16,8 @@ class ArticalLevelOne(models.Model):
 
     user = models.ForeignKey(to='User', related_name='artical_one_user', verbose_name='用户')
 
+    order = models.BigIntegerField(default=0, verbose_name='顺序')
+
     def to_obj(self):
         return {
             'title': self.title,
@@ -36,6 +38,8 @@ class ArticalLevelTwo(models.Model):
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
 
     level_one = models.ForeignKey(to='ArticalLevelOne', related_name='artical_level_two_level_one', verbose_name='一级名称')
+
+    order = models.BigIntegerField(default=0, verbose_name='顺序')
 
     def to_obj(self):
         return {
@@ -59,6 +63,8 @@ def artical_html_upload_to(instance, filename):
     return 'artical/%d/%s.html' % (instance.no.id, time_format)
 
 class Artical(models.Model):
+
+    order = models.BigIntegerField(default=0, verbose_name='顺序')
 
     no = models.ForeignKey(to='ArticalNo', null=True, verbose_name='文字编号')
 

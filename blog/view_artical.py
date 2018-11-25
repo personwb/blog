@@ -29,7 +29,7 @@ logger = logging.getLogger('default')
 @check_token
 def artical_list(request, user, body):
 
-    result = [item.to_obj_with_level_two_list() for item in ArticalLevelOne.objects.all()]
+    result = [item.to_obj_with_level_two_list() for item in ArticalLevelOne.objects.all().order_by('-order')]
 
     for level_one in result:
         for level_two in level_one['levelTwoList']:
@@ -41,14 +41,14 @@ def artical_list(request, user, body):
 @catch_exception_response
 @check_token
 def level_one_list(request, user, body):
-    return res_cross_success([item.to_obj() for item in ArticalLevelOne.objects.all()])
+    return res_cross_success([item.to_obj() for item in ArticalLevelOne.objects.all().order_by('-order')])
 
 
 @request_log
 @catch_exception_response
 @check_token
 def level_one_two_list(request, user, body):
-    return res_cross_success([item.to_obj_with_level_two_list() for item in ArticalLevelOne.objects.all()])
+    return res_cross_success([item.to_obj_with_level_two_list() for item in ArticalLevelOne.objects.all().order_by('-order')])
 
 
 @request_log
@@ -83,7 +83,7 @@ def level_one_detail(request, user, body):
 @catch_exception_response
 @check_token
 def level_two_list(request, user, body):
-    return res_cross_success([item.to_obj() for item in ArticalLevelTwo.objects.all()])
+    return res_cross_success([item.to_obj() for item in ArticalLevelTwo.objects.all().order_by('-order')])
 
 
 @request_log
@@ -132,7 +132,7 @@ def remove_level_two(request, user, body):
         logger.info(e)
         return res_cross('1001', None, '未查询到分组信息')
 
-    exist = Artical.objects.filter(level_two=level_two)
+    exist = Artical.objects.filter(level_two=level_two).order_by('-create_time')
 
     if len(exist):
         return res_cross('1001', None, '当前分组下存在文章，请先移动文章')
@@ -154,7 +154,7 @@ def level_two_detail(request, user, body):
         logger.info(e)
         return res_cross('1001', None, '未查询到详情')
 
-    return res_cross_success({'detail': level_two.to_obj(), 'levelOneList': [item.to_obj() for item in ArticalLevelOne.objects.all()]})
+    return res_cross_success({'detail': level_two.to_obj(), 'levelOneList': [item.to_obj() for item in ArticalLevelOne.objects.all().order_by('-order')]})
 
 
 @request_log
@@ -162,7 +162,7 @@ def level_two_detail(request, user, body):
 @check_token
 def artical_manager_list(request, user, body):
 
-    all = Artical.objects.all()
+    all = Artical.objects.all().order_by('-create_time')
 
     result = [{
         'id': artical.id,
