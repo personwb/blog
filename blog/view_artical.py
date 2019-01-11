@@ -208,52 +208,13 @@ def artical_detail(request, user, body):
     return res_cross_success(artical.to_obj())
 
 
-@request_log
-@catch_exception_response
-@check_token_multi_form
-def artical_add(request, user, body, files):
+def private_create_artical(level_two, artical, artical_title, artical_route_path, mark_down_file, content_type):
 
-    artical_id = body.get('id', None)
-
-    artical_title = get_key(body, 'title')
-
-    artical_level_two_id = get_key(body, 'levelTwoId')
-
-    artical_route_path = body.get('routePath', None)
-
-    mark_down_file = None
-
-    if len(files):
-        mark_down_file = files['file']
-
-    try:
-        level_two = ArticalLevelTwo.objects.get(pk=artical_level_two_id)
-    except Exception as e:
-        logger.info(e)
-        return res_cross('1001', None, '未匹配到一级菜单')
-
-    if artical_id:
-        try:
-            artical = Artical.objects.get(pk=artical_id)
-        except Exception as e:
-            artical = Artical()
-            no = ArticalNo()
-            no.save()
-            artical.no = no
-    else:
+    if not artical:
         artical = Artical()
         no = ArticalNo()
         no.save()
         artical.no = no
-
-    content_type = None
-
-    if artical_route_path:
-        content_type = 'route_path'
-
-    if mark_down_file or artical.mark_down_file:
-
-        content_type = 'mark_down_file'
 
     artical.title = artical_title
     artical.content_type = content_type
@@ -294,3 +255,91 @@ def artical_add(request, user, body, files):
     artical.save()
 
     return res_cross_success(artical.to_obj())
+
+
+@request_log
+@catch_exception_response
+@check_token_multi_form
+def artical_add(request, user, body, files):
+
+    artical_id = body.get('id', None)
+
+    artical_title = get_key(body, 'title')
+
+    artical_level_two_id = get_key(body, 'levelTwoId')
+
+    artical_route_path = body.get('routePath', None)
+
+    mark_down_file = None
+
+    artical = None
+
+    if artical_id:
+        try:
+            artical = Artical.objects.get(pk=artical_id)
+        except Exception as e:
+            logger.info(e)
+            return res_cross('1001', None, '未查询到该文章')
+
+    if len(files):
+        mark_down_file = files['file']
+
+    try:
+        level_two = ArticalLevelTwo.objects.get(pk=artical_level_two_id)
+    except Exception as e:
+        logger.info(e)
+        return res_cross('1001', None, '未匹配到二级菜单')
+
+    content_type = None
+
+    if artical_route_path:
+        content_type = 'route_path'
+
+    if mark_down_file:
+        content_type = 'mark_down_file'
+
+    return private_create_artical(level_two=level_two,
+                                  artical=artical,
+                                  artical_title=artical_title,
+                                  artical_route_path=None,
+                                  mark_down_file=file,
+                                  content_type=content_type)
+
+
+@request_log
+@catch_exception_response
+@check_token_multi_form
+def safe_create_artical_with_uuid(request, user, body, files):
+
+    markdown_file = files['file']
+
+    artical_title = get_key(body, 'title')
+
+    artical_uuid = get_key(body, 'uuid')
+
+    artical_level_two_id = get_key(body, 'levelTwoId')
+
+    try:
+        level_two = ArticalLevelTwo.objects.get(pk=artical_level_two_id)
+    except Exception as e:
+        logger.info(e)
+        return res_cross('1001', None, '未匹配到二级菜单')
+
+    try:
+        artical = Artical.objects.get(uuid=artical_uuid)
+        artical.title = artical_title
+    except Exception as e:
+        artical = Artical()
+        artical.uuid = artical_uuid
+        artical.title = artical_title
+        no = ArticalNo()
+        no.save()
+        artical.no = no
+
+    return private_create_artical(level_two=level_two,
+                                  artical=artical,
+                                  artical_title=artical_title,
+                                  artical_route_path=None,
+                                  mark_down_file=markdown_file,
+                                  content_type='mark_down_file')
+

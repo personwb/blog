@@ -62,7 +62,10 @@ def artical_html_upload_to(instance, filename):
 
     return 'artical/%d/%s.html' % (instance.no.id, time_format)
 
+
 class Artical(models.Model):
+
+    uuid = models.CharField(null=True, max_length=50, verbose_name='唯一id')
 
     order = models.BigIntegerField(default=0, verbose_name='顺序')
 

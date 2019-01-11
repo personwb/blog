@@ -150,6 +150,8 @@ def catch_exception_response(fn):
             return res(empty.code, None, empty.message)
         except CodeMsgException as empty:
             return res(empty.code, None, empty.message)
+        except Exception as e:
+            return res('500', None, '服务器异常')
         return result
 
     return catch_exception
