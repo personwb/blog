@@ -302,7 +302,7 @@ def artical_add(request, user, body, files):
                                   artical=artical,
                                   artical_title=artical_title,
                                   artical_route_path=None,
-                                  mark_down_file=file,
+                                  mark_down_file=mark_down_file,
                                   content_type=content_type)
 
 
