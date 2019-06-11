@@ -1,7 +1,7 @@
 
 from django.contrib.sites.models import Site
 
-import os
+from mysite.settings import MAIN_DOMAIN
 
 # import the logging library
 import logging
@@ -12,7 +12,7 @@ logger = logging.getLogger("default")
 
 def parse_to_url(obj):
 
-    return _parse_to_url(obj, "http")
+    return _parse_to_url(obj, "https")
 
 
 def parse_to_url_https(obj):
@@ -27,11 +27,7 @@ def parse_to_url_http(obj):
 
 def _parse_to_url(obj, pre):
 
-    Site.objects.clear_cache()
-
-    current_site = Site.objects.get_current()
-
-    root_url = '%s://%s' % (pre ,current_site.domain)
+    root_url = '%s://%s' % (pre, MAIN_DOMAIN)
 
     result = str(root_url) + str(obj)
 

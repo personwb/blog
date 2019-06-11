@@ -29,9 +29,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'up+3oyh@7l9819)f-0xitiw-9qsots)@#a(s%+!m_j((goo5%3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['onety.cn', '172.21.0.12', '140.143.207.23']
+
+MAIN_DOMAIN = 'onety.cn'
 
 # media path
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files') # 此路径为文件的真实存储的路径
@@ -48,8 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'blog',
-    'rest_framework',
-    'rest_framework.authtoken',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

@@ -44,5 +44,10 @@ def res_cross(code, data, message):
     response["Access-Control-Allow-Headers"] = " * "
     return response
 
+
 def res_cross_success(data=None):
     return res_cross('200', data, 'success')
+
+
+def res_cross_error(message):
+    return res_cross('3001', None, message)

@@ -33,3 +33,9 @@ class User(models.Model):
             'name': self.username,
             'phoneNum': self.mobile_phone
         }
+
+
+try:
+    User.objects.get(pk=1)
+except:
+    User().save()
