@@ -20,9 +20,9 @@ def article_to_simple_obj(article):
     转为JSON对象
     """
     nodes = []
-    if article.node_type in [ArticleNodeType.Directory.value,
-                             ArticleNodeType.DirectoryArticle.value,
-                             ArticleNodeType.Root.value]:
+    if article.node_type in [ArticleNodeType.Directory.key,
+                             ArticleNodeType.DirectoryArticle.key,
+                             ArticleNodeType.Root.key]:
         nodes = [article_to_simple_obj(a) for a in Article.objects.filter(s_node=article)]
     return {
         'nodeType': article.node_type,

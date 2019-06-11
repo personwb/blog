@@ -60,14 +60,14 @@ def article_directory_create(request, user, body):
     """
     title = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
     node = model_article_tool.article_by_no(body.get('sId', None))
-    if not node or node.node_type != ArticleNodeType.Directory.value:
+    if not node or node.node_type != ArticleNodeType.Directory.key:
         return res_cross('3001', None, '异常')
     article = Article()
     article.no = ArticleNo.get_no()
     article.title = title
     article.s_node = node
-    article.node_type = ArticleNodeType.Directory.value
-    article.content_type = ArticleContentType.NONE.value
+    article.node_type = ArticleNodeType.Directory.key
+    article.content_type = ArticleContentType.NONE.key
     article.save()
     return res_cross_success()
 
@@ -111,14 +111,14 @@ def article_create(request, user, body):
     """
     s_node = model_article_tool.article_by_no(body.get('sId', None))
 
-    if not s_node or s_node.node_type != ArticleNodeType.Directory.value:
+    if not s_node or s_node.node_type != ArticleNodeType.Directory.key:
         return res_cross('3001', None, '异常')
 
     article = Article()
     article.no = ArticleNo.get_no()
     article.title = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
     article.s_node = s_node
-    article.node_type = ArticleNodeType.Article.value
+    article.node_type = ArticleNodeType.Article.key
     article.save()
     return res_cross_success(model_article_tool.article_to_obj(article))
 
@@ -150,13 +150,13 @@ def article_update(request, user, body, files):
     if len(files):
         mark_down_file = files['file']
 
-    content_type = ArticleContentType.NONE.value
+    content_type = ArticleContentType.NONE.key
 
     if article_route_path:
-        content_type = ArticleContentType.Route.value
+        content_type = ArticleContentType.Route.key
 
     if mark_down_file:
-        content_type = ArticleContentType.MD.value
+        content_type = ArticleContentType.MD.key
 
     article.route_path = article_route_path
     article.title = article_title
