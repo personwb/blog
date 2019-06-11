@@ -19,7 +19,7 @@ ano.save()
 for i in range(1, 100):
     a = Article.objects.create()
     a.title = '根节点'
-    a.node_type = ArticleNodeType.Root.key
+    a.node_type = ArticleNodeType.Root
     a.root_node = True
     a.no = 'root_%d' % i
     a.save()
@@ -36,7 +36,7 @@ try:
 
         new_one = Article()
         new_one.s_node = root
-        new_one.node_type = ArticleNodeType.Directory.key
+        new_one.node_type = ArticleNodeType.Directory
         new_one.title = one.title
         new_one.no = ArticleNo.get_no()
         new_one.save()
@@ -45,7 +45,7 @@ try:
         for two in ArticalLevelTwo.objects.filter(level_one=one):
 
             new_two = Article()
-            new_two.node_type = ArticleNodeType.Directory.key
+            new_two.node_type = ArticleNodeType.Directory
             new_two.title = two.title
             new_two.s_node = new_one
             new_two.no = ArticleNo.get_no()
@@ -56,7 +56,7 @@ try:
 
                 new_atl = Article()
                 new_atl.title = atl.title
-                new_atl.node_type = ArticleNodeType.Article.key
+                new_atl.node_type = ArticleNodeType.Article
                 new_atl.s_node = new_two
                 new_atl.scan = atl.scan
                 new_atl.thumbnail_text = atl.thumbnail_text
