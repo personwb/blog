@@ -36,8 +36,10 @@ ALLOWED_HOSTS = ['onety.cn', '172.21.0.12', '140.143.207.23']
 MAIN_DOMAIN = 'onety.cn'
 
 # media path
-MEDIA_ROOT = os.path.join(BASE_DIR, 'files') # 此路径为文件的真实存储的路径
-MEDIA_URL = '/blog/files/' # 此路径为浏览器上展示的URL的路径
+# 此路径为文件的真实存储的路径
+MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
+# 此路径为浏览器上展示的URL的路径
+MEDIA_URL = '/blog/files/'
 
 # Application definition
 

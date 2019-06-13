@@ -25,4 +25,5 @@ from django.shortcuts import render
 urlpatterns = [
     url(r'^blog/admin/', admin.site.urls),
     url(r'^blog/blog/', include('blog.urls', namespace='blog')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + \
+              static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

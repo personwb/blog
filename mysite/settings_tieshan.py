@@ -31,7 +31,9 @@ SECRET_KEY = 'up+3oyh@7l9819)f-0xitiw-9qsots)@#a(s%+!m_j((goo5%3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.0.103', 'localhost', '192.168.28.151', '172.16.0.4', '111.230.129.181']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.0.103', 'localhost', '192.168.28.140', '172.16.0.4', '111.230.129.181']
+
+MAIN_DOMAIN = 'localhost:8000'
 
 # media path
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files') # 此路径为文件的真实存储的路径
