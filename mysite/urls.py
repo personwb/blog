@@ -16,14 +16,29 @@ Including another URLconf
 
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.conf.urls.static import static
+from django.views.static import serve
+import re
 
 from . import settings
 
-from django.shortcuts import render
+
+def static(prefix, view=serve, **kwargs):
+    """
+    Helper function to return a URL pattern for serving files in debug mode.
+
+    from django.conf import settings
+    from django.conf.urls.static import static
+
+    urlpatterns = [
+        # ... the rest of your URLconf goes here ...
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    """
+    # No-op if not in debug mode or an non-local prefix
+    return url(r'^%s(?P<path>.*)$' % re.escape(prefix.lstrip('/')), view, kwargs=kwargs)
+
 
 urlpatterns = [
     url(r'^blog/admin/', admin.site.urls),
     url(r'^blog/blog/', include('blog.urls', namespace='blog')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + \
-              static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    static(prefix=settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
