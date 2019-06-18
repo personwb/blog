@@ -114,15 +114,6 @@ def article_by_no(no):
         return None
 
 
-def article_scan(article):
-    """
-    浏览文章
-    """
-    article.scan += 1
-    article.save()
-    return article.to_obj()
-
-
 def article_to_time(t):
     """
     时间格式化
