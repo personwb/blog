@@ -41,6 +41,7 @@ def article_to_obj(article):
     """
     转为JSON对象
     """
+    article.scan += 1
     html_text = None
     if article.html_file:
         with open(article.html_file.path, 'r') as r:
