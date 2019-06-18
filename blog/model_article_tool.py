@@ -41,7 +41,8 @@ def article_to_obj(article):
     """
     转为JSON对象
     """
-    article.scan += 1
+    article_scan(article)
+    article.save()
     html_text = None
     if article.html_file:
         with open(article.html_file.path, 'r') as r:
@@ -91,6 +92,18 @@ def article_get_thumbnail_text(article):
                 return ''
         else:
             return ''
+
+
+def article_scan(article, save=True):
+    """
+    增加文章浏览量
+    :param article: 文章
+    :param save: 是否连接数据库直接保存
+    :return:
+    """
+    article.scan += 1
+    if save:
+        article.save()
 
 
 def article_by_no(no):
